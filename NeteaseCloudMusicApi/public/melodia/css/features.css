@@ -1,0 +1,1014 @@
+/* ============================================
+   新功能样式 - 下载、歌单管理、MV播放
+   ============================================ */
+
+/* ============================================
+   1. 下载功能
+   ============================================ */
+.download-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: none;
+}
+
+.download-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+.download-modal-content {
+    position: relative;
+    width: 400px;
+    max-width: 90vw;
+    background: var(--canvas-elevated);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.download-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.download-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.download-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.download-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.download-track-info {
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.download-track-cover {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.download-track-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.download-track-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.download-track-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.download-track-artist {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.download-quality-list {
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.quality-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quality-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(var(--accent-rgb, 100, 150, 255), 0.3);
+}
+
+.quality-option.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.quality-option.disabled:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.quality-option.loading {
+    pointer-events: none;
+}
+
+.quality-option-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quality-badge {
+    padding: 4px 10px;
+    background: rgba(var(--accent-rgb, 100, 150, 255), 0.15);
+    color: var(--accent-primary);
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.quality-badge.vip {
+    background: linear-gradient(135deg, rgba(255, 200, 50, 0.2), rgba(255, 150, 50, 0.2));
+    color: #FFD700;
+}
+
+.quality-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.quality-option-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quality-size {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.quality-download-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+}
+
+.quality-option:hover .quality-download-icon {
+    color: var(--accent-primary);
+}
+
+.quality-loading {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 下载按钮样式 */
+.track-action-btn.download-btn:hover {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.15);
+}
+
+/* ============================================
+   2. 歌单管理功能
+   ============================================ */
+.playlist-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: none;
+}
+
+.playlist-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playlist-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+.playlist-modal-content {
+    position: relative;
+    width: 480px;
+    max-width: 90vw;
+    max-height: 80vh;
+    background: var(--canvas-elevated);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.playlist-modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.playlist-modal-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.playlist-modal-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.playlist-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.playlist-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+}
+
+/* 创建歌单表单 */
+.create-playlist-form {
+    padding: 16px 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(var(--accent-rgb, 100, 150, 255), 0.5);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb, 100, 150, 255), 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.form-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-primary);
+}
+
+.form-checkbox span {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.btn-cancel {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.btn-submit {
+    padding: 10px 24px;
+    background: var(--accent-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-submit:hover {
+    filter: brightness(1.1);
+}
+
+.btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 添加到歌单列表 */
+.add-to-playlist-track {
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.add-to-playlist-track img {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+
+.add-to-playlist-track-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.add-to-playlist-track-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.add-to-playlist-track-artist {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.playlist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.playlist-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.playlist-list-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.playlist-list-item.added {
+    background: rgba(var(--accent-rgb, 100, 150, 255), 0.1);
+}
+
+.playlist-list-item-cover {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.playlist-list-item-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.playlist-list-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.playlist-list-item-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playlist-list-item-count {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.playlist-list-item-check {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+}
+
+.playlist-list-item-check svg {
+    display: none;
+}
+
+.playlist-list-item.added .playlist-list-item-check svg {
+    display: block;
+}
+
+.create-playlist-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    margin-bottom: 8px;
+}
+
+.create-playlist-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(var(--accent-rgb, 100, 150, 255), 0.4);
+}
+
+.create-playlist-btn svg {
+    width: 24px;
+    height: 24px;
+    color: var(--accent-primary);
+}
+
+.create-playlist-btn span {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* 我的歌单管理页面 */
+.my-playlists-section {
+    padding: var(--space-lg);
+}
+
+.my-playlists-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+.my-playlists-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.create-playlist-header-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--accent-primary);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.create-playlist-header-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.create-playlist-header-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.my-playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-lg);
+}
+
+.my-playlist-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.my-playlist-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.my-playlist-card-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.my-playlist-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.my-playlist-card:hover .my-playlist-card-cover img {
+    transform: scale(1.05);
+}
+
+.my-playlist-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.my-playlist-card:hover .my-playlist-card-overlay {
+    opacity: 1;
+}
+
+.my-playlist-card-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.my-playlist-card-btn:hover {
+    background: var(--accent-primary);
+    transform: scale(1.1);
+}
+
+.my-playlist-card-btn.play-btn {
+    width: 48px;
+    height: 48px;
+    background: var(--accent-primary);
+}
+
+.my-playlist-card-btn.delete-btn:hover {
+    background: #ef4444;
+}
+
+.my-playlist-card-info {
+    padding: var(--space-md);
+}
+
+.my-playlist-card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.my-playlist-card-count {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+/* ============================================
+   3. MV播放器
+   ============================================ */
+.mv-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: none;
+}
+
+.mv-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mv-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.mv-modal-content {
+    position: relative;
+    width: 90vw;
+    max-width: 1200px;
+    background: var(--canvas-deep);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 32px 100px rgba(0, 0, 0, 0.6);
+}
+
+.mv-header {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.mv-header h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mv-close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.mv-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.mv-video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.mv-video {
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+.mv-quality-selector {
+    position: absolute;
+    bottom: 60px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.mv-quality-btn {
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mv-quality-btn:hover,
+.mv-quality-btn.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.mv-info {
+    padding: 20px 24px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.mv-info-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 12px;
+}
+
+.mv-info-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.mv-info-item svg {
+    width: 16px;
+    height: 16px;
+}
+
+.mv-description {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.6;
+    max-height: 60px;
+    overflow: hidden;
+}
+
+/* ============================================
+   4. 歌曲右键菜单/更多操作
+   ============================================ */
+.track-context-menu {
+    position: fixed;
+    z-index: 1100;
+    min-width: 200px;
+    background: var(--canvas-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    padding: 8px 0;
+    display: none;
+}
+
+.track-context-menu.active {
+    display: block;
+}
+
+.context-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.context-menu-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.context-menu-item svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+}
+
+.context-menu-item span {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.context-menu-item.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.context-menu-item.danger svg,
+.context-menu-item.danger span {
+    color: #ef4444;
+}
+
+.context-menu-divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 8px 0;
+}
+
+/* ============================================
+   5. 侧边栏歌单列表
+   ============================================ */
+.sidebar-playlists {
+    padding: 0 var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+.sidebar-playlists-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.sidebar-playlists-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-tertiary);
+}
+
+.sidebar-create-playlist-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--text-tertiary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sidebar-create-playlist-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-playlist-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sidebar-playlist-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-playlist-item.active {
+    background: var(--accent-primary-muted);
+}
+
+.sidebar-playlist-cover {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.sidebar-playlist-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sidebar-playlist-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sidebar-playlist-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-playlist-count {
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+/* 添加到歌单按钮样式 */
+.track-action-btn.add-to-playlist-btn:hover {
+    color: var(--accent-primary);
+    background: rgba(var(--accent-rgb, 100, 150, 255), 0.15);
+}

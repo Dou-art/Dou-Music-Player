@@ -1,0 +1,84 @@
+name: Issue Management
+permissions:
+  issues: write
+  contents: read
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+
+jobs:
+  welcome-new-issues:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Welcome new issue
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            👋 感谢您提交issue！
+
+            我们已经收到您的反馈，维护者会尽快查看并回复。
+
+            由于二开作者是高中生, 只能在非工作日处理issue, 请耐心等待。
+
+            在等待回复期间，您可以：
+            - 📖 查看[项目文档](https://neteasecloudmusicapienhanced.js.org)
+            - 💬 加入[QQ交流群](https://qm.qq.com/q/TpeP9Uv2yk) 进行实时讨论
+            - 🔍 搜索[现有issues](https://github.com/neteasecloudmusicapienhanced/api-enhanced/issues) 看是否有类似问题
+
+  handle-help-wanted:
+    if: contains(github.event.issue.labels.*.name, 'question')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add help resources
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            🆘 需要帮助？
+
+            这里有一些可能对您有用的资源：
+
+            📚 **文档资源**
+            - [项目文档](https://neteasecloudmusicapienhanced.js.org)
+
+            🔍 **常见问题**
+            - 搜索[已关闭的issues](https://github.com/neteasecloudmusicapienhanced/api-enhanced/issues?q=is%3Aissue+is%3Aclosed) 看看是否有类似的问题已经被解答。
+
+            💬 **即时帮助**
+            - 加入QQ群：https://qm.qq.com/q/TpeP9Uv2yk
+
+            如果以上资源无法解决您的问题，请提供更多详细信息，我们会尽快为您解答！
+
+            由于二开作者是高中生, 只能在非工作日处理issue, 请耐心等待。
+
+  stale-issues:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark stale issues
+        uses: actions/stale@v8
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: |
+            这个issue已经30天没有活动了。
+
+            如果这个问题仍然存在，请回复此评论说明当前状态。
+            否则，这个issue将在7天后自动关闭。
+
+            您可以随时重新打开已关闭的issue。
+          stale-pr-message: |
+            这个PR已经30天没有活动了。
+
+            如果您仍在处理这个PR，请回复此评论。
+            否则，这个PR将在7天后自动关闭。
+          days-before-stale: 30
+          days-before-close: 7
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+          exempt-issue-labels: "pinned,enhancement,priority:high,ongoing,fatal"
+          exempt-pr-labels: "pinned,priority:high,ongoing,fatal"

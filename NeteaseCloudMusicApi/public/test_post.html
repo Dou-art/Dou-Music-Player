@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POST Test</title>
+</head>
+<body>
+    <h1>POST 请求测试</h1>
+    <button onclick="testPost()">测试 POST (JSON)</button>
+    <button onclick="testGet()">测试 GET</button>
+    <button onclick="testPostForm()">测试 POST (Form)</button>
+    <pre id="result"></pre>
+    
+    <script>
+    async function testPost() {
+        const result = document.getElementById('result');
+        result.textContent = '请求中...';
+        
+        try {
+            const response = await fetch('/playlist/create?timestamp=' + Date.now() + '&randomCNIP=true', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: 'testPlaylist',
+                    cookie: { MUSIC_U: 'test' }
+                })
+            });
+            
+            const data = await response.json();
+            result.textContent = 'POST JSON - Status: ' + response.status + '\n' + JSON.stringify(data, null, 2);
+        } catch (error) {
+            result.textContent = 'Error: ' + error.message;
+        }
+    }
+    
+    async function testGet() {
+        const result = document.getElementById('result');
+        result.textContent = '请求中...';
+        
+        try {
+            const response = await fetch('/playlist/create?name=testPlaylist&timestamp=' + Date.now() + '&randomCNIP=true&cookie=MUSIC_U%3Dtest', {
+                method: 'GET'
+            });
+            
+            const data = await response.json();
+            result.textContent = 'GET - Status: ' + response.status + '\n' + JSON.stringify(data, null, 2);
+        } catch (error) {
+            result.textContent = 'Error: ' + error.message;
+        }
+    }
+    
+    async function testPostForm() {
+        const result = document.getElementById('result');
+        result.textContent = '请求中...';
+        
+        try {
+            const formData = new URLSearchParams();
+            formData.append('name', 'testPlaylist');
+            formData.append('cookie', 'MUSIC_U=test');
+            
+            const response = await fetch('/playlist/create?timestamp=' + Date.now() + '&randomCNIP=true', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
+            });
+            
+            const data = await response.json();
+            result.textContent = 'POST Form - Status: ' + response.status + '\n' + JSON.stringify(data, null, 2);
+        } catch (error) {
+            result.textContent = 'Error: ' + error.message;
+        }
+    }
+    </script>
+</body>
+</html>

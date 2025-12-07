@@ -1,0 +1,23 @@
+# Node安装包
+*.msi
+*.exe
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build
+dist/
+build/

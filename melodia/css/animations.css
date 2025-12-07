@@ -1,0 +1,456 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes soundWave {
+    0%, 100% {
+        height: 4px;
+    }
+    50% {
+        height: 16px;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    15% {
+        transform: scale(1.3);
+    }
+    30% {
+        transform: scale(1);
+    }
+    45% {
+        transform: scale(1.15);
+    }
+    60% {
+        transform: scale(1);
+    }
+}
+
+.playing-icon {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 16px;
+}
+
+.playing-icon .bar {
+    width: 3px;
+    background: var(--accent-primary);
+    border-radius: 1px;
+    animation: soundWave 0.8s ease-in-out infinite;
+}
+
+.playing-icon .bar:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.playing-icon .bar:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.playing-icon .bar:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.like-btn.animating svg {
+    animation: heartBeat 0.6s ease-in-out;
+}
+
+.track-item {
+    animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.track-item:nth-child(1) { animation-delay: 0ms; }
+.track-item:nth-child(2) { animation-delay: 30ms; }
+.track-item:nth-child(3) { animation-delay: 60ms; }
+.track-item:nth-child(4) { animation-delay: 90ms; }
+.track-item:nth-child(5) { animation-delay: 120ms; }
+.track-item:nth-child(6) { animation-delay: 150ms; }
+.track-item:nth-child(7) { animation-delay: 180ms; }
+.track-item:nth-child(8) { animation-delay: 210ms; }
+.track-item:nth-child(9) { animation-delay: 240ms; }
+.track-item:nth-child(10) { animation-delay: 270ms; }
+
+.header-content {
+    animation: fadeInUp var(--duration-slow) var(--ease-out);
+}
+
+.nav-item,
+.playlist-item {
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.now-playing-cover img {
+    transition: transform var(--duration-slower) var(--ease-smooth);
+}
+
+@keyframes coverRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.now-playing-cover.playing img {
+    animation: coverRotate 20s linear infinite;
+    border-radius: var(--radius-full);
+}
+
+.btn-play,
+.btn-play-large {
+    transition: all var(--duration-fast) var(--ease-bounce);
+}
+
+.btn-icon {
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-icon:active {
+    transform: scale(0.9);
+}
+
+.progress-played,
+.volume-fill,
+.fullscreen-progress-played,
+.fullscreen-volume-fill {
+    transition: width 100ms linear;
+}
+
+.playlist-cover img,
+.track-cover img {
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.playlist-cover:hover img,
+.track-item:hover .track-cover img {
+    transform: scale(1.05);
+}
+
+.fullscreen-player {
+    transition: opacity var(--duration-slow) var(--ease-smooth),
+                visibility var(--duration-slow) var(--ease-smooth);
+}
+
+.shuffle-btn.active,
+.repeat-btn.active {
+    color: var(--accent-primary);
+    position: relative;
+}
+
+.shuffle-btn.active::after,
+.repeat-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--accent-primary);
+    border-radius: var(--radius-full);
+}
+
+/* ============================================
+   流光悬停效果系统 - 霓虹呼吸感
+   ============================================ */
+
+/* 歌曲列表项 - 柔和背景 */
+.track-item {
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.track-item:hover {
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.06);
+    box-shadow: inset 3px 0 0 rgba(var(--accent-rgb, 0, 255, 200), 0.6);
+}
+
+/* 评论项 */
+.comment-item {
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.comment-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: inset 2px 0 0 rgba(var(--accent-rgb, 0, 255, 200), 0.4);
+}
+
+/* 回复项 */
+.reply-item {
+    transition: background 0.4s ease, padding-left 0.4s ease;
+}
+
+.reply-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 14px;
+}
+
+/* 卡片通用 - 浮起 + 光晕 */
+.playlist-card,
+.artist-card,
+.artist-album-card {
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 0.6s ease;
+}
+
+.playlist-card::after,
+.artist-card::after,
+.artist-album-card::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+        rgba(var(--accent-rgb, 0, 255, 200), 0.3),
+        transparent 50%,
+        rgba(var(--accent-rgb, 0, 255, 200), 0.1)
+    );
+    opacity: 0;
+    z-index: -1;
+    filter: blur(8px);
+    transition: opacity 0.6s ease;
+}
+
+.playlist-card:hover,
+.artist-card:hover,
+.artist-album-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(var(--accent-rgb, 0, 255, 200), 0.1);
+}
+
+.playlist-card:hover::after,
+.artist-card:hover::after,
+.artist-album-card:hover::after {
+    opacity: 1;
+}
+
+/* 封面放大 */
+.playlist-cover,
+.artist-avatar,
+.album-card-cover {
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.playlist-card:hover .playlist-cover,
+.artist-card:hover .artist-avatar,
+.artist-album-card:hover .album-card-cover {
+    transform: scale(1.08);
+}
+
+/* 侧边栏导航 - 光带滑过 */
+.nav-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--accent-rgb, 0, 255, 200), 0.1),
+        transparent
+    );
+    transition: left 0.6s ease;
+}
+
+.nav-item:hover::after {
+    left: 100%;
+}
+
+/* 侧边栏歌单项 */
+.playlist-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.playlist-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 2px;
+    height: 0;
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.8);
+    transform: translateY(-50%);
+    transition: height 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.playlist-item:hover::before {
+    height: 60%;
+}
+
+/* 按钮 */
+.btn-icon,
+.track-action-btn {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.btn-icon:hover,
+.track-action-btn:hover {
+    color: rgba(var(--accent-rgb, 0, 255, 200), 1);
+    text-shadow: 0 0 12px rgba(var(--accent-rgb, 0, 255, 200), 0.5);
+}
+
+/* 评论区按钮 */
+.comment-like-btn,
+.comment-reply-to-btn,
+.replies-count-btn {
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.comment-like-btn:hover,
+.comment-reply-to-btn:hover,
+.replies-count-btn:hover {
+    color: rgba(var(--accent-rgb, 0, 255, 200), 1);
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.1);
+}
+
+/* 主要按钮 */
+.btn-primary,
+.btn-secondary {
+    transition: box-shadow 0.4s ease, filter 0.4s ease;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+    box-shadow: 0 0 20px rgba(var(--accent-rgb, 0, 255, 200), 0.4);
+    filter: brightness(1.1);
+}
+
+/* 歌词行 - 发光聚焦 */
+.lyric-line {
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+.lyric-line:hover:not(.active) {
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 20px rgba(var(--accent-rgb, 0, 255, 200), 0.3);
+}
+
+/* 队列项 */
+.queue-item {
+    position: relative;
+    transition: background 0.4s ease;
+}
+
+.queue-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.8);
+    transform: scaleY(0);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.queue-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.queue-item:hover::before {
+    transform: scaleY(1);
+}
+
+/* 搜索结果项 */
+.search-result-item {
+    position: relative;
+    transition: background 0.4s ease;
+}
+
+.search-result-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--accent-rgb, 0, 255, 200), 0.5),
+        transparent
+    );
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+}
+
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.search-result-item:hover::after {
+    transform: scaleX(1);
+}
+
+/* 工具栏按钮 */
+.artists-refresh-btn,
+.artists-back-btn {
+    transition: background 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+.artists-refresh-btn:hover,
+.artists-back-btn:hover {
+    border-color: rgba(var(--accent-rgb, 0, 255, 200), 0.5);
+    box-shadow: 0 0 15px rgba(var(--accent-rgb, 0, 255, 200), 0.2);
+}

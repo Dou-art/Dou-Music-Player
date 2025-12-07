@@ -1,0 +1,88 @@
+:root {
+    /* ═══ 深色画布层次 ═══ */
+    --canvas-deep: #0D0D0F;
+    --canvas-base: #161618;
+    --canvas-elevated: #1E1E21;
+    --canvas-hover: #28282C;
+
+    /* ═══ 毛玻璃材质 ═══ */
+    --glass-sidebar-bg: rgba(22, 22, 24, 0.65);
+    --glass-sidebar-blur: 40px;
+    --glass-player-bg: rgba(13, 13, 15, 0.78);
+    --glass-player-blur: 50px;
+    --glass-modal-bg: rgba(30, 30, 33, 0.85);
+    --glass-modal-blur: 30px;
+
+    /* ═══ 边框与分割 ═══ */
+    --border-subtle: rgba(255, 255, 255, 0.04);
+    --border-light: rgba(255, 255, 255, 0.08);
+    --border-medium: rgba(255, 255, 255, 0.12);
+
+    /* ═══ 文字层次 ═══ */
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.70);
+    --text-tertiary: rgba(255, 255, 255, 0.50);
+    --text-disabled: rgba(255, 255, 255, 0.30);
+
+    /* ═══ 强调色 ═══ */
+    --accent-primary: #FF3B5C;
+    --accent-primary-hover: #FF5C7A;
+    --accent-primary-muted: rgba(255, 59, 92, 0.15);
+    --accent-primary-glow: rgba(255, 59, 92, 0.4);
+
+    /* ═══ 语义色 ═══ */
+    --semantic-success: #32D74B;
+    --semantic-warning: #FFD60A;
+    --semantic-error: #FF453A;
+
+    /* ═══ 阴影 ═══ */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.6);
+    --shadow-cover: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+    /* ═══ 字体 ═══ */
+    --font-family: 'Inter', 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Cascadia Code', 'SF Mono', 'Consolas', monospace;
+
+    /* ═══ 字号 ═══ */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.5rem;
+    --text-2xl: 1.75rem;
+    --text-3xl: 2rem;
+
+    /* ═══ 间距 ═══ */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+
+    /* ═══ 圆角 ═══ */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* ═══ 动画 ═══ */
+    --duration-fast: 150ms;
+    --duration-normal: 200ms;
+    --duration-slow: 300ms;
+    --duration-slower: 400ms;
+    --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* ═══ 布局尺寸 ═══ */
+    --sidebar-width: 240px;
+    --sidebar-collapsed: 72px;
+    --player-height: 90px;
+    --header-height: 280px;
+}

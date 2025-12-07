@@ -1,0 +1,389 @@
+/* ============================================
+   流光背景系统 v2 - 霓虹穿透效果
+   核心理念：把黑变"透"，让光"亮"起来
+   ============================================ */
+
+.app {
+    position: relative;
+    background: #050508;
+    overflow: hidden;
+}
+
+/* ============================================
+   底层 Mesh Gradient 画布
+   ============================================ */
+.aurora-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    background: 
+        radial-gradient(ellipse 120% 80% at 10% 20%, rgba(0, 255, 200, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 100% at 90% 80%, rgba(255, 100, 200, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(100, 150, 255, 0.06) 0%, transparent 50%);
+}
+
+/* ============================================
+   主光斑 - 高饱和霓虹色 + Screen混合
+   ============================================ */
+.blob-primary {
+    position: absolute;
+    top: -40%;
+    left: -30%;
+    width: 90vw;
+    height: 90vw;
+    min-width: 700px;
+    min-height: 700px;
+    max-width: 1400px;
+    max-height: 1400px;
+    background: radial-gradient(circle, 
+        rgba(0, 255, 220, 0.8) 0%, 
+        rgba(0, 200, 255, 0.5) 25%,
+        rgba(100, 100, 255, 0.3) 50%,
+        transparent 70%
+    );
+    filter: blur(50px);
+    mix-blend-mode: screen;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    animation: blobFloat1 8s ease-in-out infinite;
+    transition: all 1.5s ease;
+}
+
+/* 次光斑 - 右下角暖色 */
+.blob-secondary {
+    position: absolute;
+    bottom: -50%;
+    right: -35%;
+    width: 85vw;
+    height: 85vw;
+    min-width: 650px;
+    min-height: 650px;
+    max-width: 1300px;
+    max-height: 1300px;
+    background: radial-gradient(circle, 
+        rgba(255, 100, 200, 0.75) 0%, 
+        rgba(255, 50, 150, 0.45) 25%,
+        rgba(200, 50, 255, 0.25) 50%,
+        transparent 70%
+    );
+    filter: blur(55px);
+    mix-blend-mode: screen;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation: blobFloat2 10s ease-in-out infinite;
+    transition: all 1.5s ease;
+}
+
+/* 第三光斑 - 中央点缀 */
+.blob-tertiary {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 70vw;
+    height: 70vw;
+    min-width: 550px;
+    min-height: 550px;
+    max-width: 1000px;
+    max-height: 1000px;
+    background: radial-gradient(circle, 
+        rgba(100, 200, 255, 0.6) 0%, 
+        rgba(150, 100, 255, 0.35) 35%,
+        transparent 65%
+    );
+    filter: blur(60px);
+    mix-blend-mode: screen;
+    border-radius: 50%;
+    animation: blobFloat3 12s ease-in-out infinite;
+    transition: all 1.5s ease;
+}
+
+/* 极光流 - 旋转的锥形渐变 */
+.aurora-flow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        rgba(0, 255, 200, 0.12) 45deg,
+        transparent 90deg,
+        rgba(255, 100, 255, 0.1) 135deg,
+        transparent 180deg,
+        rgba(100, 150, 255, 0.11) 225deg,
+        transparent 270deg,
+        rgba(255, 200, 100, 0.08) 315deg,
+        transparent 360deg
+    );
+    filter: blur(50px);
+    mix-blend-mode: screen;
+    animation: auroraRotate 30s linear infinite;
+    opacity: 1;
+}
+
+/* ============================================
+   光斑动画 - 快速流动
+   ============================================ */
+@keyframes blobFloat1 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    20% {
+        transform: translate(100px, 80px) scale(1.15) rotate(10deg);
+    }
+    40% {
+        transform: translate(50px, 150px) scale(0.9) rotate(-5deg);
+    }
+    60% {
+        transform: translate(150px, 50px) scale(1.1) rotate(8deg);
+    }
+    80% {
+        transform: translate(80px, 120px) scale(1.05) rotate(-3deg);
+    }
+}
+
+@keyframes blobFloat2 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    25% {
+        transform: translate(-80px, -100px) scale(1.2) rotate(-10deg);
+    }
+    50% {
+        transform: translate(-150px, -50px) scale(0.85) rotate(8deg);
+    }
+    75% {
+        transform: translate(-60px, -130px) scale(1.1) rotate(-5deg);
+    }
+}
+
+@keyframes blobFloat3 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.8;
+    }
+    33% {
+        transform: translate(-80px, 60px) scale(1.25);
+        opacity: 1;
+    }
+    66% {
+        transform: translate(60px, -40px) scale(0.9);
+        opacity: 0.9;
+    }
+}
+
+@keyframes auroraRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   遮罩层 - 轻量化，让光透过来
+   ============================================ */
+.vignette-overlay {
+    display: none;
+}
+
+.content-overlay {
+    display: none;
+}
+
+/* ============================================
+   播放状态 - 光效更快更强
+   ============================================ */
+.app.playing .blob-primary {
+    animation: blobFloat1 5s ease-in-out infinite, blobBreath 1.5s ease-in-out infinite;
+}
+
+.app.playing .blob-secondary {
+    animation: blobFloat2 6s ease-in-out infinite, blobBreath 2s ease-in-out infinite;
+}
+
+.app.playing .blob-tertiary {
+    animation: blobFloat3 7s ease-in-out infinite, blobBreath 1.8s ease-in-out infinite;
+}
+
+.app.playing .aurora-flow {
+    animation: auroraRotate 20s linear infinite;
+    opacity: 1;
+}
+
+@keyframes blobBreath {
+    0%, 100% {
+        filter: blur(50px) brightness(1);
+    }
+    50% {
+        filter: blur(40px) brightness(1.5);
+    }
+}
+
+/* ============================================
+   UI层 - 极致透明的磨砂玻璃
+   ============================================ */
+.sidebar {
+    position: relative;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.main-content {
+    position: relative;
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.02) !important;
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+}
+
+.player-bar {
+    position: relative;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(50px) saturate(180%);
+    -webkit-backdrop-filter: blur(50px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 内容区完全透明 */
+.content-header {
+    background: transparent !important;
+}
+
+.header-gradient {
+    background: linear-gradient(
+        180deg,
+        var(--header-glow-color, rgba(0, 255, 200, 0.15)) 0%,
+        transparent 100%
+    ) !important;
+    transition: all 2s ease;
+    mix-blend-mode: screen;
+}
+
+.track-list {
+    background: transparent;
+}
+
+.track-item {
+    background: transparent;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.track-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.track-item.playing {
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.15);
+    box-shadow: inset 0 0 30px rgba(var(--accent-rgb, 0, 255, 200), 0.1);
+}
+
+/* 推荐歌单 */
+.recommended-playlists {
+    background: transparent;
+}
+
+.playlist-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.3s ease;
+}
+
+.playlist-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   鼠标跟随光效
+   ============================================ */
+.cursor-glow {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, 
+        var(--cursor-glow-color, rgba(0, 255, 200, 0.2)) 0%, 
+        transparent 60%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 3;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    mix-blend-mode: screen;
+}
+
+.cursor-glow.active {
+    opacity: 1;
+}
+
+/* ============================================
+   底部播放器光晕
+   ============================================ */
+.player-glow {
+    position: fixed;
+    bottom: -50px;
+    left: -10%;
+    right: -10%;
+    height: 250px;
+    background: radial-gradient(ellipse 60% 100% at 50% 100%,
+        var(--player-glow-color, rgba(0, 255, 200, 0.4)) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(40px);
+    mix-blend-mode: screen;
+    transition: all 2s ease;
+    animation: playerPulse 4s ease-in-out infinite;
+}
+
+.app.playing .player-glow {
+    animation: playerPulse 2s ease-in-out infinite;
+}
+
+@keyframes playerPulse {
+    0%, 100% {
+        opacity: 0.7;
+        transform: scaleX(1) scaleY(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleX(1.05) scaleY(1.15);
+    }
+}
+
+/* ============================================
+   导航项发光效果
+   ============================================ */
+.nav-item.active {
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.15) !important;
+    box-shadow: inset 0 0 20px rgba(var(--accent-rgb, 0, 255, 200), 0.1);
+}
+
+.playlist-item.active {
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.12) !important;
+}
+
+/* 全屏播放器背景样式已移至 fullscreen.css */
+
+/* ============================================
+   滚动条发光
+   ============================================ */
+.main-content::-webkit-scrollbar-thumb {
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.3);
+    box-shadow: 0 0 10px rgba(var(--accent-rgb, 0, 255, 200), 0.3);
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--accent-rgb, 0, 255, 200), 0.5);
+}
