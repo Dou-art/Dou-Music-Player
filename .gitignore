@@ -18,6 +18,11 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Build
-dist/
-build/
+# Build (only root level)
+/dist/
+/build/
+
+# Don't ignore node_modules internals
+!node_modules/**/dist/
+!node_modules/**/build/
+!node_modules/**/bin/
